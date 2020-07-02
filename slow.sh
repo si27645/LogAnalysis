@@ -15,7 +15,7 @@ then
 	cat *.log   |  wc -l >> Slow_requests 
 	echo "Number of requests" >> Slow_requests  ;cat Slow_requests
 	read -p "Press any key to resume ..."
-	cat *.log  | awk  ' NR==1 {print}  NR!=1 {a[substr($4,0,index($4,":")-1)]+=$7;b[substr($4,0,index($4,":")-1)]+=1;if(0+c[substr($4,0,index($4,":")-1)]<$7)c[substr($4,0,index($4,":")-1)]=$7} END{for (i in a){print c[i],a[i]/b[i],a[i],b[i],i}}'  | awk '{if($1!="https") print $0}'  | sort -n  | tail -n 50 > Slow_By_URL ; cat Slow_By_URL
+	cat *.log  | awk  ' NR==1 {print}  NR!=1 {a[substr($4,0,index($4,":")-1)]+=$7;b[substr($4,0,index($4,":")-1)]+=1;if(0+c[substr($4,0,index($4,":")-1)]<$7)c[substr($4,0,index($4,":")-1)]=$7} END{for (i in a){print c[i],a[i]/b[i],a[i],b[i],i}}'  | awk '{if($1!="https") print $0}'  | sort -n  | tail -n 50 > Slow_By_IP ; cat Slow_By_IP
 	  echo "<MAX> <AVG> <SUM> <CNT>  <IP>"
 	  read -p "Press any key to resume ..."
 	  cat Slow_By_Time  | awk '{if($2>2) print $5}'  | awk '{if(index($1,"-")>0) print $1}'  | awk 'END { print r } { r = r ? r OFS $0 : $0 }  ' OFS=' ' | xargs  sh $0
@@ -37,7 +37,7 @@ do
 	cat *.log  | grep $Filter   |  wc -l >> Slow_requests_$Filter 
 	echo "Number of requests"$Filter   >> Slow_requests_$Filter  ;cat Slow_requests_$Filter
 	#read -p "Press any key to resume ..."
-	cat *.log  | grep $Filter  | awk  ' NR==1 {print}  NR!=1 {a[substr($4,0,index($4,":")-1)]+=$7;b[substr($4,0,index($4,":")-1)]+=1;if(0+c[substr($4,0,index($4,":")-1)]<$7)c[substr($4,0,index($4,":")-1)]=$7} END{for (i in a){print c[i],a[i]/b[i],a[i],b[i],i}}'  | awk '{if($1!="https") print $0}'  | sort -n  | tail -n 50 > Slow_By_URL ; cat Slow_By_URL_$Filter
+	cat *.log  | grep $Filter  | awk  ' NR==1 {print}  NR!=1 {a[substr($4,0,index($4,":")-1)]+=$7;b[substr($4,0,index($4,":")-1)]+=1;if(0+c[substr($4,0,index($4,":")-1)]<$7)c[substr($4,0,index($4,":")-1)]=$7} END{for (i in a){print c[i],a[i]/b[i],a[i],b[i],i}}'  | awk '{if($1!="https") print $0}'  | sort -n  | tail -n 50 > Slow_By_IP_$Filter ; cat Slow_By_IP_$Filter
 	  echo "<MAX> <AVG> <SUM> <CNT>  <IP>"$Filter  
 done
 fi
